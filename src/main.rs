@@ -1,11 +1,13 @@
-mod include;
-mod entity;
-
 use crate::include::*;
-use crate::entity::Entity;
 
-#[derive(PartialEq, Clone, Copy)]
-pub enum Directions {DOWN, RIGHT, UP, LEFT}
+use crate::directions::Directions;
+use crate::entity::Entity;
+use crate::snake::Snake;
+
+mod include;
+mod directions;
+mod entity;
+mod snake;
 
 fn main() {
     let mut window = RenderWindow::new(
@@ -18,10 +20,12 @@ fn main() {
     let mut clock = Clock::start();
     let mut total_time = clock.restart().as_seconds();
 
-    let mut head = Entity::new();
+    let mut my_snake = Snake::new();
+    my_snake.add_body_part();
+    my_snake.add_body_part();
+    my_snake.add_body_part();
 
     let mut active_direction: Directions = Directions::DOWN;
-    head.set_move_direction(active_direction.clone());
 
     while window.is_open() {
 
@@ -40,17 +44,18 @@ fn main() {
             }
         }
 
-        if total_time >= *head.get_move_time() {
-            head.set_move_direction(active_direction.clone());
-
-            head.move_shape();
-
-            head.set_prev_move_direction((head.get_move_direction()).clone());
+        if total_time >= *my_snake.get_head().get_move_time() {
+            my_snake.move_body(&active_direction);
             total_time = 0.0;
         }
 
         window.clear(Color::BLACK);
-        window.draw(head.get_shape());
+
+        window.draw(my_snake.get_head().get_shape());
+        for x in my_snake.get_body() {
+            window.draw(x.get_shape());
+        }
+
         window.display();
     }
 }

@@ -1,5 +1,6 @@
 use crate::include::*;
-use crate::Directions;
+
+use crate::directions::Directions;
 
 pub struct Entity<'a> {
     shape: RectangleShape<'a>,
@@ -9,7 +10,6 @@ pub struct Entity<'a> {
     total_movement: Vector2f,
 
     move_direction: Directions,
-    prev_move_direction: Directions,
 }
 
 impl<'a> Entity<'a> {
@@ -26,23 +26,18 @@ impl<'a> Entity<'a> {
             total_movement: {Vector2f::new(0.0, 0.0)},
 
             move_direction: Directions::DOWN,
-            prev_move_direction: Directions::DOWN,
         }
     }
 
-    pub fn move_shape(&mut self) {
-        if self.move_direction == Directions::DOWN  && self.prev_move_direction != Directions::UP       { self.total_movement = Vector2f::new(0.0, self.move_distance); }
-        if self.move_direction == Directions::RIGHT && self.prev_move_direction != Directions::LEFT     { self.total_movement = Vector2f::new(self.move_distance, 0.0); }
-        if self.move_direction == Directions::UP    && self.prev_move_direction != Directions::DOWN     { self.total_movement = Vector2f::new(0.0, -self.move_distance); }
-        if self.move_direction == Directions::LEFT  && self.prev_move_direction != Directions::RIGHT    { self.total_movement = Vector2f::new(-self.move_distance, 0.0); }
-
-        self.shape.move_(self.total_movement);
-    }
-
     pub fn get_shape(&self) -> &RectangleShape<'a> { &self.shape }
-    pub fn get_move_time(&self) -> &f32 { &self.move_time }
-    pub fn get_move_direction(&self) -> &Directions { &self.move_direction }
 
-    pub fn set_move_direction(&mut self, md: Directions) { self.move_direction = md; }
-    pub fn set_prev_move_direction(&mut self, pmd: Directions) { self.prev_move_direction = pmd; }
+    pub fn get_move_time(&self) -> &f32 { &self.move_time }
+    //pub fn get_move_direction(&self) -> &Directions { &self.move_direction }
+    pub fn get_shape_position(&self) -> Vector2f { self.shape.position() }
+
+    pub fn set_shape_position(&mut self, pos: Vector2f) { self.shape.set_position(pos); }
+    fn set_move_direction(&mut self, md: Directions) { self.move_direction = md; }
 }
+
+// Associated methods.
+mod move_shape;
