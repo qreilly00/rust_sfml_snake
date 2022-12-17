@@ -20,10 +20,12 @@ fn main() {
     let mut clock = Clock::start();
     let mut total_time = clock.restart().as_seconds();
 
-    let mut my_snake = Snake::new();
-    my_snake.add_body_part();
-    my_snake.add_body_part();
-    my_snake.add_body_part();
+    let scale = 32.0;
+
+    let mut my_snake = Snake::new(scale);
+    my_snake.add_body_part(scale);
+    my_snake.add_body_part(scale);
+    my_snake.add_body_part(scale);
 
     let mut active_direction: Directions = Directions::DOWN;
 

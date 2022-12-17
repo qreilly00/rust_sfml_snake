@@ -9,9 +9,9 @@ pub struct Snake<'a> {
 }
 
 impl<'a> Snake<'a> {
-    pub fn new() -> Self{
+    pub fn new(size: f32) -> Self{
         Self {
-            head: Entity::new(),
+            head: Entity::new(size),
             body: Vec::new(),
         }
     }
@@ -29,8 +29,8 @@ impl<'a> Snake<'a> {
         }
     }
 
-    pub fn add_body_part(&mut self) {
-        self.body.push(Entity::new());
+    pub fn add_body_part(&mut self, size: f32) {
+        self.body.push(Entity::new(size));
     }
 
     pub fn get_head(&self) -> &Entity { &self.head }
